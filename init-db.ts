@@ -4,14 +4,14 @@ import {COURSES, findLessonsForCourse} from './db-data';
 import * as firebase from 'firebase';
 
 var config = {
-    // TODO copy-paste here your own config, taken from the Firebase dashboard
-    apiKey: "AIzaSyBC9AIbgFfJQPKHBgGg7xULHNWjlnW-3vs",
-    authDomain: "stripe-course-recording.firebaseapp.com",
-    databaseURL: "https://stripe-course-recording.firebaseio.com",
-    projectId: "stripe-course-recording",
-    storageBucket: "stripe-course-recording.appspot.com",
-    messagingSenderId: "909700347297",
-    appId: "1:909700347297:web:0e9e7105baf123acdd87e0"
+  // TODO copy-paste here your own config, taken from the Firebase dashboard
+  apiKey: "AIzaSyDbPoGQDlNPu5t9UnltPAXHkSLadVa6n30",
+  authDomain: "stripe-course-rec.firebaseapp.com",
+  databaseURL: "https://stripe-course-rec.firebaseio.com",
+  projectId: "stripe-course-rec",
+  storageBucket: "stripe-course-rec.appspot.com",
+  messagingSenderId: "784837271295",
+  appId: "1:784837271295:web:9eb577e77b5023bc4fb6ca"
 };
 
 console.log("Uploading data to the database with the following config:\n");
@@ -37,13 +37,15 @@ async function uploadData() {
 
       const newCourse = removeId(course);
 
+      console.log(`Adding course ${course.titles.description}`);
+
       const courseRef = await courses.add(newCourse);
 
       const lessons = courseRef.collection("lessons");
 
       const courseLessons = findLessonsForCourse(course.id);
 
-      //console.log(`Adding ${courseLessons.length} lessons to ${course.description}`);
+      console.log(`Adding ${courseLessons.length} lessons to ${course.titles.description}`);
 
       courseLessons.forEach(async lesson => {
 

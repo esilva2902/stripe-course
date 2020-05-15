@@ -5,13 +5,13 @@ import * as firebase from 'firebase';
 
 var config = {
   // TODO copy-paste here your own config, taken from the Firebase dashboard
-  apiKey: "AIzaSyDbPoGQDlNPu5t9UnltPAXHkSLadVa6n30",
-  authDomain: "stripe-course-rec.firebaseapp.com",
-  databaseURL: "https://stripe-course-rec.firebaseio.com",
-  projectId: "stripe-course-rec",
-  storageBucket: "stripe-course-rec.appspot.com",
-  messagingSenderId: "784837271295",
-  appId: "1:784837271295:web:9eb577e77b5023bc4fb6ca"
+  apiKey: "AIzaSyBvoAS4qRRjvbmWQsizv1A1zMr7AyR_1O8",
+  authDomain: "stripe-course-ems.firebaseapp.com",
+  databaseURL: "https://stripe-course-ems.firebaseio.com",
+  projectId: "stripe-course-ems",
+  storageBucket: "stripe-course-ems.appspot.com",
+  messagingSenderId: "149520842721",
+  appId: "1:149520842721:web:664188eba728da1c1c1ca0"
 };
 
 console.log("Uploading data to the database with the following config:\n");

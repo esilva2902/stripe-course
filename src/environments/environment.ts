@@ -3,13 +3,13 @@ export const environment = {
   production: false,
   firebase: {
     // TODO copy-paste here your own config, taken from the Firebase dashboard
-      apiKey: "AIzaSyBC9AIbgFfJQPKHBgGg7xULHNWjlnW-3vs",
-      authDomain: "stripe-course-recording.firebaseapp.com",
-      databaseURL: "https://stripe-course-recording.firebaseio.com",
-      projectId: "stripe-course-recording",
-      storageBucket: "stripe-course-recording.appspot.com",
-      messagingSenderId: "909700347297",
-      appId: "1:909700347297:web:0e9e7105baf123acdd87e0"
+    apiKey: "AIzaSyBvoAS4qRRjvbmWQsizv1A1zMr7AyR_1O8",
+    authDomain: "stripe-course-ems.firebaseapp.com",
+    databaseURL: "https://stripe-course-ems.firebaseio.com",
+    projectId: "stripe-course-ems",
+    storageBucket: "stripe-course-ems.appspot.com",
+    messagingSenderId: "149520842721",
+    appId: "1:149520842721:web:664188eba728da1c1c1ca0"
   },
   api: {
     baseUrl: ""

@@ -32,6 +32,10 @@ export class CoursesCardListComponent implements OnInit {
 
   ngOnInit() {
 
+    /**
+     * 1. Once the user clicks on the BUY COURSE button, we have
+     *    to ensure that the user has logged in:
+     */
     this.afAuth.authState
       .pipe(
         map(user => !!user)
@@ -42,25 +46,34 @@ export class CoursesCardListComponent implements OnInit {
 
   purchaseCourse(course: Course, isLoggedIn: boolean) {
 
-      if (!isLoggedIn) {
-          alert("Please login first.");
-      }
+    if (!isLoggedIn) {
+        alert("Please login first.");
+    }
 
-      this.purchaseStarted = true;
+    this.purchaseStarted = true;
 
-
-        this.checkout.startCourseCheckoutSession(course.id)
-            .subscribe(
-                session => {
-                    this.checkout.redirectToCheckout(session);
-                },
-                err => {
-                    console.log('Error creating checkout session', err);
-                    this.purchaseStarted = false;
-                }
-            );
-
-
+    /**
+     * 2. Once the user is logged in, we are going to call our server endpoint
+     *    in order to initialize (from our server) a checkout session with Stripe 
+     *    server.
+     * 
+     * IMPORTANT: The reason why we can not start a checkout session from the client
+     *            is that we have to prove the checkout request comes from our website.
+     * 
+     *            Stripe provide a unique token to every client to sign the specified 
+     *            request. The token must be secret, then the token CAN NOT be at 
+     *            client side.
+     */
+    this.checkout.startCourseCheckoutSession(course.id)
+        .subscribe(
+            session => {
+                this.checkout.redirectToCheckout(session);
+            },
+            err => {
+                console.log('Error creating checkout session', err);
+                this.purchaseStarted = false;
+            }
+        );
   }
 
 }

@@ -2,39 +2,50 @@ service cloud.firestore {
 
   match /databases/{database}/documents {
 
-        function userOwnsCourse(userId, courseId) {
-            return exists(/databases/$(database)/documents/users/$(userId)/coursesOwned/$(courseId))
-        }
+    // Verifies the given user has access to the given course:
+    function userOwnsCourse(userId, courseId) {
+      return exists(/databases/$(database)/documents/users/$(userId)/coursesOwned/$(courseId))
+    }
 
-        function isSubscriber(userId) {
-            return "pricingPlanId" in get(/databases/$(database)/documents/users/$(userId)).data
-        }
+    // Verifies if the given user has bought a subscription:
+    function isSubscriber(userId) {
+      // get function receives a whole path and delivers the document itself. In data
+      // property is stored the fields and its values of the retrieved document.
+      // This boolean statement only verifies that the document has a pricingPlanId field.
+      return "pricingPlanId" in get(/databases/$(database)/documents/users/$(userId)).data
+    }
 
-        function isUserWithId(userId) {
-            return request.auth.uid == userId;
-        }
+    // Verifies if the current user who is doing the request, has the given userId:
+    function isUserWithId(userId) {
+      return request.auth.uid == userId;
+    }
 
-        match /courses/{courseId} {
-            allow read: if true;
+    match /courses/{courseId} {
+      // Any user, logged in or not, can read courses collection:
+      allow read: if true;
 
-            match /lessons/{lessonId} {
-                allow read: if userOwnsCourse(request.auth.uid,courseId) || isSubscriber(request.auth.uid)
-            }
-        }
+      // Only subscribers or a user who paid a specific course could see lessons sub-collection:
+      match /lessons/{lessonId} {
+        allow read: if userOwnsCourse(request.auth.uid, courseId) || isSubscriber(request.auth.uid)
+      }
+    }
 
-        match /purchaseSessions/{purchaseId} {
-            allow read: if request.auth.uid == resource.data.userId;
-        }
+    // Every user could only see its own purchaseSessions:
+    match /purchaseSessions/{purchaseId} {
+      // IMPORTANT:
+      // request.auth.uid represents the current user who is accesing the purchaseSessions collection.
+      // resource.data contains all the fields beneath the current path. It means contains the fields in purchaseSessions documents.
+      allow read: if request.auth.uid == resource.data.userId;
+    }
 
-        match /users/{userId} {
-            allow read: if isUserWithId(userId);
+    match /users/{userId} {
+      // Every logged-in user can only see its own user info:
+      allow read: if isUserWithId(userId);
 
-            match /coursesOwned/{courseId} {
-                allow read: if isUserWithId(userId);
-            }
-
-        }
-
+      // Every logged-in user can only see its own purchased courses:
+      match /coursesOwned/{courseId} {
+        allow read: if isUserWithId(userId);
+      }
+    }
   }
-
 }

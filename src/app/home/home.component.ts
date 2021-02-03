@@ -48,14 +48,27 @@ export class HomeComponent implements OnInit {
 
 
   subscribeToPlan() {
-        this.checkout.startSubscriptionCheckoutSession("STRIPE_MONTHLY")
-            .subscribe(
-                session => this.checkout.redirectToCheckout(session),
-                err => {
-                    console.log("Error creating checkout session", err);
-                    this.processingOngoing = false;
-                }
-            );
+    /**
+     * RECURRING CHARGE
+     *
+     * 1. Same as before, we are going to call our server endpoint
+     *    in order to initialize (from our server) a checkout session with Stripe
+     *    server.
+     *
+     *    Checkout payments supports ONE-TIME charge or RECURRING charges.
+     *
+     * IMPORTANT: When a customer is going to pay a recurring charge, we must
+     *            indetify our Price (price_1HJPbrJfjaQkS62Ei1Y3uk9X) which must be
+     *            created in the Stripe platform previously.
+     */
+    this.checkout.startSubscriptionCheckoutSession("price_1HJPbrJfjaQkS62Ei1Y3uk9X")
+      .subscribe(
+        session => this.checkout.redirectToCheckout(session),
+        err => {
+            console.log("Error creating checkout session", err);
+            this.processingOngoing = false;
+        }
+      );
   }
 
 }

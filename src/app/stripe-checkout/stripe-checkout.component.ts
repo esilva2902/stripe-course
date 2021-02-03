@@ -26,15 +26,25 @@ export class StripeCheckoutComponent implements OnInit {
 
       if (result == "success") {
 
-          const ongoingPurchaseSessionId = this.route.snapshot.queryParamMap.get("ongoingPurchaseSessionId");
+        // Only on successful purchase, the unique id of purchaseSession document comes in the URL as a query param:
+        const ongoingPurchaseSessionId = this.route.snapshot.queryParamMap.get("ongoingPurchaseSessionId");
 
-          this.checkout.waitForPurchaseCompleted(ongoingPurchaseSessionId)
-              .subscribe(
-                  () => {
-                      this.waiting = false;
-                      this.message = "Purchase SUCCESSFUL, redirecting...";
-                      setTimeout(() => this.router.navigateByUrl("/courses"), 3000);
-                  })
+        /**
+         * ONE TIME PURCHASE
+         *
+         * 6. StripeCheckout component subscribes a method exposed by Checkout service,
+         *    waiting for purchase completion.
+         *
+         * NOTE:  Internally, Checkout service will open a websocket directly to purchaseSession
+         *        collection. See waitForPurchaseCompleted(ongoingPurchaseSessionId) method.
+         */
+        this.checkout.waitForPurchaseCompleted(ongoingPurchaseSessionId)
+            .subscribe(
+                () => {
+                    this.waiting = false;
+                    this.message = "Purchase SUCCESSFUL, redirecting...";
+                    setTimeout(() => this.router.navigateByUrl("/courses"), 3000);
+                })
 
       }
       else {

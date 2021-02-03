@@ -1,10 +1,10 @@
 {
   "name": "stripe-course",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve  --proxy-config ./proxy.json",
+    "start": "ng serve  --proxy-config ./proxy.json --poll 3000",
     "init-db": "ts-node -P ./init-db.tsconfig.json ./init-db.ts",
     "build:prod": "ng build --prod",
     "firebase-deploy:prod": "firebase deploy",
